@@ -179,6 +179,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Nome',
+        'summary' => 'Sommario',
+        'client_name' => 'Commissionato da',
+    ],
 
 ];
