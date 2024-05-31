@@ -1,0 +1,25 @@
+@extends('layouts.admin')
+
+@section('content')
+<div class="container">
+    <h2 class="fs-4 text-secondary my-4">
+        {{ __('Dashboard') }}
+    </h2>
+    <div class="row justify-content-center">
+        <div class="col">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Name: </strong>{{ $project->name }}</li>
+                <li class="list-group-item"><strong>ID: </strong>{{ $project->id }}</li>
+                <li class="list-group-item"><strong>Slug: </strong>/{{ $project->slug }}</li>
+                <li class="list-group-item"><strong>For: </strong>{{ $project->client_name ? $project->client_name : '---' }}</li>
+                <li class="list-group-item">
+                    <strong>Summary</strong>
+                    <p class="mb-0">{{ $project->summary ? $project->summary : '---' }}</p>
+                </li>
+                <li class="list-group-item"><strong>Created: </strong>{{ $project->created_at }}</li>
+                <li class="list-group-item"><strong>Updated: </strong>{{ $project->updated_at }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+@endsection
