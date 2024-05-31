@@ -69,9 +69,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -81,9 +81,16 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $formData = $request->all();
+        $this->validator($formData, $project);
+        $formData['slug'] = Str::slug($formData['name'], '-');
+
+        $project->fill($formData);
+        $project->save();
+
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -97,21 +104,23 @@ class ProjectController extends Controller
         //
     }
 
-    //validator custom che dovrebbe funzionare sia per edit che per create, andando ad attivare una regola solo se passo l'id
-    private function validator($input, $id = false){
+    //validator custom che dovrebbe funzionare sia per edit che per create, andando a sostituire una regola solo se passo l'istanza project
+    private function validator($input, $project = false){
 
         $rules = [
             'name' => [
                 'required',
                 'min:5',
                 'max:150',
+                'unique:projects,name'
             ],
             'client_name' => 'nullable|min:5|max:600',
             'summary' => 'nullable|min:10|max:2000',
         ];
 
-        if ($id) {
-            array_push($rules['name'], Rule::unique('projects')->ignore($id));
+        if ($project) {
+            array_pop($rules['name']);
+            array_push($rules['name'], Rule::unique('projects')->ignore($project));
         }
 
         $messages = [
@@ -121,6 +130,7 @@ class ProjectController extends Controller
                 'numeric' => 'Il campo ":attribute" accetta un valore massimo di :max.',
                 'string' => 'Il campo ":attribute" accetta un massimo di :max caratteri.',
             ],
+            'unique' => 'Il valore inserito nel campo ":attribute" è già presente nel nostro sistema.'
         ];
 
         $validator = Validator::make($input, $rules, $messages)->validate();
