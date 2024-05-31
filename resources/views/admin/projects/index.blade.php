@@ -28,7 +28,7 @@
                                     <td>
                                         <a class="btn btn-success" href="{{ route('admin.projects.show', $project->id) }}">See</a>
                                         <a class="btn btn-warning" href="{{ route('admin.projects.edit', $project->id) }}">Edit</a>
-                                        <a class="btn btn-danger" href="{{ route('admin.projects.destroy', $project->id) }}">Delete</a>
+                                        <button class="btn btn-danger js-delete" data-id="{{ $project->id }}" data-name="{{ $project->name }}">Delete</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -39,4 +39,5 @@
         </div>
     </div>
 </div>
+@include('partials.modal')
 @endsection

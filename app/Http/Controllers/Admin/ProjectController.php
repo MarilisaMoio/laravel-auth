@@ -99,9 +99,11 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        $project->delete();
+
+        return redirect()->route('admin.projects.index');
     }
 
     //validator custom che dovrebbe funzionare sia per edit che per create, andando a sostituire una regola solo se passo l'istanza project
