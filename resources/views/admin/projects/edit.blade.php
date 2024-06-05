@@ -29,6 +29,21 @@
                     <input type="text" class="form-control" id="client_name" name="client_name" value="{{ $project->client_name, old('client_name') }}">
                 </div>
                 <div class="mb-3">
+                    <label for="img" class="form-label">Immagine</label>
+                    <input class="form-control mb-2" type="file" id="img" name="img">
+                    @if($project->img)
+                        <img src="{{ asset('storage/' . $project->img) }}" alt="" style="max-height:100px; display:block">
+                    @else
+                        <small>No image.</small>
+                    @endif
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="deleteImg" name="deleteImg">
+                    <label class="form-check-label" for="deleteImg">
+                        Delete existing img?
+                    </label>
+                </div>
+                <div class="mb-3">
                     <label for="summary" class="form-label">Sommario</label>
                     <textarea class="form-control" id="summary" rows="5" name="summary">{{ $project->summary, old('summary') }}</textarea>
                 </div>

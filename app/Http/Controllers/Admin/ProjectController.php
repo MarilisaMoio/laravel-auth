@@ -90,6 +90,20 @@ class ProjectController extends Controller
     {
         $formData = $request->all();
         $this->validator($formData, $project);
+
+        if($request->hasFile('img')){
+            if($project->img) {
+                Storage::delete($project->img);
+            };
+
+            $img_path = Storage::disk('public')->put('project_images', $formData['img']);
+            $formData['img'] = $img_path;
+        } elseif ($request->has('deleteImg')){
+            Storage::delete($project->img);
+            $formData['img'] = null;
+        };
+
+
         $formData['slug'] = Str::slug($formData['name'], '-');
 
         $project->fill($formData);
