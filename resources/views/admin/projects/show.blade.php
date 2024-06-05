@@ -12,12 +12,18 @@
                 <li class="list-group-item"><strong>ID: </strong>{{ $project->id }}</li>
                 <li class="list-group-item"><strong>Slug: </strong>/{{ $project->slug }}</li>
                 <li class="list-group-item"><strong>For: </strong>{{ $project->client_name ? $project->client_name : '---' }}</li>
+                <li class="list-group-item"><strong>Created: </strong>{{ $project->created_at }}</li>
+                <li class="list-group-item"><strong>Updated: </strong>{{ $project->updated_at }}</li>
                 <li class="list-group-item">
                     <strong>Summary</strong>
                     <p class="mb-0">{{ $project->summary ? $project->summary : '---' }}</p>
                 </li>
-                <li class="list-group-item"><strong>Created: </strong>{{ $project->created_at }}</li>
-                <li class="list-group-item"><strong>Updated: </strong>{{ $project->updated_at }}</li>
+                @if($project->img)
+                    <li class="list-group-item">
+                        <strong>IMG</strong>
+                        <img src="{{ asset('storage/' . $project->img) }}" alt="" style="max-height:500px; display:block">
+                    </li>
+                @endif
             </ul>
         </div>
     </div>
