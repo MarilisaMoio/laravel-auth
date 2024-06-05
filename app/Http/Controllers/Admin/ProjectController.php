@@ -8,6 +8,7 @@ use App\Models\Project;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -44,6 +45,10 @@ class ProjectController extends Controller
         $formData = $request->all();
         $this->validator($formData);
         $formData['slug'] = Str::slug($formData['name'], '-');
+        if($request->hasFile('img')){
+            $img_path = Storage::disk('public')->put('project_images', $formData['img']);
+            $formData['img'] = $img_path;
+        };
 
         $newProject = new Project();
         $newProject->fill($formData);
@@ -118,6 +123,7 @@ class ProjectController extends Controller
             ],
             'client_name' => 'nullable|min:5|max:600',
             'summary' => 'nullable|min:10|max:2000',
+            'img' => 'nullable|image|max:512'
         ];
 
         if ($project) {
@@ -131,8 +137,10 @@ class ProjectController extends Controller
             'max' => [
                 'numeric' => 'Il campo ":attribute" accetta un valore massimo di :max.',
                 'string' => 'Il campo ":attribute" accetta un massimo di :max caratteri.',
+                'file' => 'Il campo ":attribute" non deve superare i :max kilobyte'
             ],
-            'unique' => 'Il valore inserito nel campo ":attribute" è già presente nel nostro sistema.'
+            'unique' => 'Il valore inserito nel campo ":attribute" è già presente nel nostro sistema.',
+            'image' => 'Il campo ":attribute" può contenere solo file di immagini.'
         ];
 
         $validator = Validator::make($input, $rules, $messages)->validate();
